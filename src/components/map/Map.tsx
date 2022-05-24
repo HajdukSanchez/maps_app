@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -7,25 +7,34 @@ import { styles } from './Map.styles';
 import { useLocation } from '../../hooks';
 import { FloatingActionButton } from '../';
 import { LoadingScreen } from '../../screens';
+import { Location } from '../../models/location.model';
 
 const Map = () => {
   const mapViewRef = useRef<MapView>();
-  const {
-    hasLocation,
-    initialPosition: { latitude, longitude },
-    getCurrentLocation,
-  } = useLocation();
+  const { hasLocation, userLocation, initialPosition, getCurrentLocation, followUserLocation } = useLocation();
 
-  const centerCamera = async () => {
-    const { latitude, longitude } = await getCurrentLocation();
+  useEffect(() => {
+    followUserLocation();
+    return () => {};
+  }, []);
 
+  useEffect(() => {
+    centerCamera(userLocation);
+  }, [userLocation]);
+
+  const centerCamera = ({ latitude, longitude }: Location) => {
     mapViewRef.current?.animateCamera({
       center: {
         latitude,
         longitude,
       },
-			zoom: 15,
+      zoom: 15,
     });
+  };
+
+  const handleCenterCamera = async () => {
+    const { latitude, longitude } = await getCurrentLocation();
+    centerCamera({ latitude, longitude });
   };
 
   return hasLocation ? (
@@ -36,13 +45,13 @@ const Map = () => {
         showsUserLocation
         showsMyLocationButton={false}
         initialRegion={{
-          latitude,
-          longitude,
+          latitude: initialPosition.latitude,
+          longitude: initialPosition.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
       />
-      <FloatingActionButton iconName="locate-outline" onPress={centerCamera} style={{ bottom: 20, right: 20 }} />
+      <FloatingActionButton iconName="locate-outline" onPress={handleCenterCamera} style={{ bottom: 20, right: 20 }} />
     </View>
   ) : (
     <LoadingScreen />
