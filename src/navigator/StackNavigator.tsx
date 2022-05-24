@@ -9,7 +9,7 @@ const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
   return (
-    <Navigator initialRouteName="Loading" screenOptions={_screenOptions}>
+    <Navigator initialRouteName="Permission" screenOptions={_screenOptions}>
       <Screen name="Loading" component={LoadingScreen} />
       <Screen name="Permission" component={PermissionScreen} />
       <Screen name="Map" component={MapScreen} />
