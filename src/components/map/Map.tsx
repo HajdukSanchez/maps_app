@@ -11,14 +11,18 @@ import { Location } from '../../models/location.model';
 
 const Map = () => {
   const mapViewRef = useRef<MapView>();
-  const { hasLocation, userLocation, initialPosition, getCurrentLocation, followUserLocation } = useLocation();
+  const following = useRef<boolean>(true);
+  const { hasLocation, userLocation, initialPosition, getCurrentLocation, followUserLocation, stopFollowingUserLocation } = useLocation();
 
   useEffect(() => {
     followUserLocation();
-    return () => {};
+    return () => {
+      stopFollowingUserLocation();
+    };
   }, []);
 
   useEffect(() => {
+    if (!following.current) return; // Don't update map if user is not following
     centerCamera(userLocation);
   }, [userLocation]);
 
@@ -34,7 +38,12 @@ const Map = () => {
 
   const handleCenterCamera = async () => {
     const { latitude, longitude } = await getCurrentLocation();
+    following.current = true; // Reset following
     centerCamera({ latitude, longitude });
+  };
+
+  const handleTouchMap = () => {
+    following.current = false;
   };
 
   return hasLocation ? (
@@ -50,6 +59,7 @@ const Map = () => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        onTouchStart={handleTouchMap}
       />
       <FloatingActionButton iconName="locate-outline" onPress={handleCenterCamera} style={{ bottom: 20, right: 20 }} />
     </View>
