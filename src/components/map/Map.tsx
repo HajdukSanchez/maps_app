@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 
-import MapView from 'react-native-maps';
+import MapView, { Polyline } from 'react-native-maps';
 
 import { styles } from './Map.styles';
 import { useLocation } from '../../hooks';
@@ -12,7 +12,8 @@ import { Location } from '../../models/location.model';
 const Map = () => {
   const mapViewRef = useRef<MapView>();
   const following = useRef<boolean>(true);
-  const { hasLocation, userLocation, initialPosition, getCurrentLocation, followUserLocation, stopFollowingUserLocation } = useLocation();
+  const [showPolylines, setshowPolylines] = useState<boolean>(true);
+  const { hasLocation, userLocation, initialPosition, routeLines, getCurrentLocation, followUserLocation, stopFollowingUserLocation } = useLocation();
 
   useEffect(() => {
     followUserLocation();
@@ -46,6 +47,10 @@ const Map = () => {
     following.current = false;
   };
 
+  const handleShowPolylines = () => {
+    setshowPolylines(!showPolylines);
+  };
+
   return hasLocation ? (
     <View style={styles.container}>
       <MapView
@@ -59,9 +64,15 @@ const Map = () => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        onTouchStart={handleTouchMap}
+        onTouchStart={handleTouchMap}>
+        {showPolylines && <Polyline coordinates={routeLines} strokeColor={'black'} strokeWidth={3} />}
+      </MapView>
+      <FloatingActionButton iconName="locate-outline" onPress={handleCenterCamera} style={{ bottom: 20, right: 20 }} iconSize={30} />
+      <FloatingActionButton
+        iconName={!showPolylines ? 'pencil-outline' : 'alert-outline'}
+        onPress={handleShowPolylines}
+        style={{ bottom: 80, right: 20 }}
       />
-      <FloatingActionButton iconName="locate-outline" onPress={handleCenterCamera} style={{ bottom: 20, right: 20 }} />
     </View>
   ) : (
     <LoadingScreen />

@@ -8,12 +8,14 @@ const useLocation = () => {
   const [hasLocation, setHasLocation] = useState<boolean>(false); // To know if we have the user location
   const [initialPosition, setInitialPosition] = useState<Location>({} as Location);
   const [userLocation, setUserLocation] = useState<Location>({} as Location);
+  const [routeLines, setRouteLines] = useState<Location[]>([]);
   const watchId = useRef<number>();
 
   useEffect(() => {
     getCurrentLocation().then(location => {
       setInitialPosition(location);
       setUserLocation(location);
+      setRouteLines(previusRoutes => [...previusRoutes, location]);
       setHasLocation(true);
     });
   }, []);
@@ -39,6 +41,7 @@ const useLocation = () => {
     watchId.current = Geolocation.watchPosition(
       ({ coords: { latitude, longitude } }) => {
         setUserLocation({ latitude, longitude });
+        setRouteLines(previusRoutes => [...previusRoutes, { longitude, latitude }]);
       },
       error => console.log({ error }),
       {
@@ -53,6 +56,7 @@ const useLocation = () => {
   };
 
   return {
+    routeLines,
     hasLocation,
     userLocation,
     initialPosition,
