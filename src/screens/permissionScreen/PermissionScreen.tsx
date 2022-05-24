@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const HomeScreen = () => {
+const PermissionScreen = () => {
   return (
     <View>
       <Text>HomeScreen</Text>
@@ -9,4 +9,4 @@ const HomeScreen = () => {
   );
 };
 
-export { HomeScreen };
+export { PermissionScreen };

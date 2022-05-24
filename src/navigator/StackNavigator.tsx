@@ -1,18 +1,24 @@
 import React from 'react';
 
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 
-import { HomeScreen } from '../screens';
 import { RootStackParamList } from '../routes/routes';
+import { LoadingScreen, MapScreen, PermissionScreen } from '../screens';
 
 const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
   return (
-    <Navigator>
-      <Screen name="Home" component={HomeScreen} />
+    <Navigator initialRouteName="Loading" screenOptions={_screenOptions}>
+      <Screen name="Loading" component={LoadingScreen} />
+      <Screen name="Permission" component={PermissionScreen} />
+      <Screen name="Map" component={MapScreen} />
     </Navigator>
   );
+};
+
+const _screenOptions: StackNavigationOptions = {
+  headerShown: false,
 };
 
 export { StackNavigator };
