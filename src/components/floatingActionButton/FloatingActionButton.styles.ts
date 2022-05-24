@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: 50,
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     borderRadius: 100,
     elevation: 1,
     zIndex: 10000,

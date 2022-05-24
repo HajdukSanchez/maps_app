@@ -15,7 +15,7 @@ const FloatingActionButton = ({ iconName, style, onPress }: FloatingActionButton
   return (
     <View style={{ ...styles.container,...(style as any) }}>
       <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={styles.button}>
-        <Icon name={iconName} color={'black'} size={35} />
+        <Icon name={iconName} color={'white'} size={35} />
       </TouchableOpacity>
     </View>
   );
