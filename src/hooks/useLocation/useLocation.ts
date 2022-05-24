@@ -10,9 +10,18 @@ const useLocation = () => {
   const [userLocation, setUserLocation] = useState<Location>({} as Location);
   const [routeLines, setRouteLines] = useState<Location[]>([]);
   const watchId = useRef<number>();
+  const isMounted = useRef<boolean>(true);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     getCurrentLocation().then(location => {
+      if (!isMounted.current) return; // This is beacuse we are cahnging the state without a mounted component
       setInitialPosition(location);
       setUserLocation(location);
       setRouteLines(previusRoutes => [...previusRoutes, location]);
@@ -40,6 +49,7 @@ const useLocation = () => {
   const followUserLocation = () => {
     watchId.current = Geolocation.watchPosition(
       ({ coords: { latitude, longitude } }) => {
+        if (!isMounted.current) return; // This is beacuse we are cahnging the state without a mounted component
         setUserLocation({ latitude, longitude });
         setRouteLines(previusRoutes => [...previusRoutes, { longitude, latitude }]);
       },
