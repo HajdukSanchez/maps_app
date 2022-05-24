@@ -13,9 +13,9 @@ const PermissionScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>HomeScreen</Text>
+      <Text style={styles.text}>Enable permissions to your Location</Text>
       <Button title="Request permission" onPress={handleLocationPermission} />
-      <Text style={styles.text}>{JSON.stringify(permissions, null, 5)}</Text>
+      {/* <Text style={styles.text}>{JSON.stringify(permissions, null, 5)}</Text> */}
     </View>
   );
 };

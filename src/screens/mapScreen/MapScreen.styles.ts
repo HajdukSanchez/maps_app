@@ -9,7 +9,5 @@ export const styles = StyleSheet.create({
   },
   text: {
     ...globalStyles.text,
-		fontWeight: 'bold',
-		marginVertical: 10,
   },
 });

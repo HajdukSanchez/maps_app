@@ -6,10 +6,6 @@ export const styles = StyleSheet.create({
     ...globalStyles.screenContainer,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  text: {
-    ...globalStyles.text,
-		fontWeight: 'bold',
-		marginVertical: 10,
+    backgroundColor: 'white',
   },
 });
