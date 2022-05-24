@@ -2,18 +2,18 @@ import { StyleSheet } from 'react-native';
 import { globalStyles } from '../../themes/appTheme';
 
 export const styles = StyleSheet.create({
+  container: {
+    ...globalStyles.shadow,
+    position: 'absolute',
+  },
   button: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 40,
-    borderRadius: 50,
-    backgroundColor: 'black',
-    elevation: 6,
-    ...globalStyles.shadow,
-  },
-  buttonText: {
-    fontSize: 16,
-    color: 'white',
+    width: 50,
+    height: 50,
+    backgroundColor: 'white',
+    borderRadius: 100,
+    elevation: 1,
+    zIndex: 10000,
   },
 });
